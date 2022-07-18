@@ -2,6 +2,8 @@ package com.cybergaming424.blockshuffle.managers;
 
 import com.cybergaming424.blockshuffle.instances.Game;
 import com.cybergaming424.blockshuffle.instances.Party;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +18,9 @@ public class PartyManager {
     }
 
     // Creates a new game party
-    public void newParty(){
+    public void newParty(UUID partyLead){
         int ID = gameParties.size() + 1;
-        gameParties.add(new Party(ID));
+        gameParties.add(new Party(ID, partyLead));
     }
 
     // Removes game party
@@ -35,6 +37,15 @@ public class PartyManager {
         for(Party party : gameParties){
             if(party.getPlayers().contains(player)){
                 return party;
+            }
+        }
+        return null;
+    }
+
+    public Player getLead(UUID player){
+        for(Party party : gameParties){
+            if(party.getPartyLead().equals(player)){
+                return Bukkit.getPlayer(player);
             }
         }
         return null;

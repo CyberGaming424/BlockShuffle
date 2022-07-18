@@ -4,3 +4,6 @@ main: com.cybergaming424.blockshuffle.Blockshuffle
 api-version: 1.18
 authors: [ CyberGaming424 ]
 description: A plugin idea from the learn spigot discord
+commands:
+  blockshuffle:
+    aliases: [bs]
