@@ -55,6 +55,10 @@ public class Party {
 
     public List<UUID> getPartyRequests(){ return partyRequests; }
 
+    public void leadLeft(){
+        this.partyLead = players.get(1);
+    }
+
     public Game getGame(){
         return game;
     }
