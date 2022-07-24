@@ -46,8 +46,8 @@ public class CommandHandler implements CommandExecutor {
             }
             // Send request
             if((args[0].equalsIgnoreCase("request") && args[1] != null) &&
-                    blockshuffle.getPartyManager().getParty(((Player) sender).getUniqueId()) == null){
-                if(blockshuffle.getPartyManager().getLead(Bukkit.getPlayer(args[1]).getUniqueId())!= null) {
+                    blockshuffle.getPartyManager().getParty(((Player) sender).getUniqueId()) == null){ // Checks if player is in a party
+                if(blockshuffle.getPartyManager().getLead(Bukkit.getPlayer(args[1]).getUniqueId())!= null) {  // Checks if the player who's party this requested player is requesting from is the lead of the party.
                     blockshuffle.getPartyManager().getParty(Bukkit.getPlayer(args[1]).getUniqueId()).addRequest(((Player) sender).getUniqueId());
                     Bukkit.getPlayer(args[1]).sendMessage(ChatColor.GOLD + ((Player) sender).getDisplayName() + " has requested to join your party. " +
                             "/blockshuffle accept <player name> to accept or /blockshuffle deny <player name> to deny the request.");
@@ -61,7 +61,40 @@ public class CommandHandler implements CommandExecutor {
                 return false;
             }
             // Accept request
+            if((args[0].equalsIgnoreCase("accept") && args[1] != null) &&
+                    blockshuffle.getPartyManager().getParty(((Player) sender).getUniqueId()) != null){
+                if(blockshuffle.getPartyManager().getLead(((Player) sender).getUniqueId()).equals(((Player) sender).getPlayer().getUniqueId())){
+                    if(Bukkit.getPlayer(args[1]).isOnline() && blockshuffle.getPartyManager().getParty(((Player) sender).getUniqueId()).hasRequest(
+                            Bukkit.getPlayer(args[1]).getUniqueId()
+                    )){
+                        blockshuffle.getPartyManager().getParty(((Player) sender).getUniqueId()).addPlayer(Bukkit.getPlayer(args[1]).getUniqueId());
+                        blockshuffle.getPartyManager().getParty(((Player) sender).getUniqueId()).getPartyRequests().remove(Bukkit.getPlayer(args[1]).getUniqueId());
+                        Bukkit.getPlayer(args[1]).sendMessage(ChatColor.GOLD + "You have been added to " + ((Player) sender).getDisplayName() + "'s party!");
+                        sender.sendMessage(ChatColor.GOLD + "You have added " + args[1] + " to your party!");
+                    }
+                }else {
+                    ((Player) sender).sendMessage(ChatColor.RED + "You are not the lead of the party! /blockshuffle createparty");
+                    return false;
+                }
+            }
             // Deny request
+            if((args[0].equalsIgnoreCase("deny") && args[1] != null) &&
+                    blockshuffle.getPartyManager().getParty(((Player) sender).getUniqueId()) != null){
+                if(blockshuffle.getPartyManager().getLead(((Player) sender).getUniqueId()).equals(((Player) sender).getPlayer().getUniqueId())){
+                    if(Bukkit.getPlayer(args[1]).isOnline() && blockshuffle.getPartyManager().getParty(((Player) sender).getUniqueId()).hasRequest(
+                            Bukkit.getPlayer(args[1]).getUniqueId()
+                    )){
+                        blockshuffle.getPartyManager().getParty(((Player) sender).getUniqueId()).getPartyRequests().remove(Bukkit.getPlayer(args[1]).getUniqueId());
+                        Bukkit.getPlayer(args[1]).sendMessage(ChatColor.RED + "You were denied access to " + ((Player) sender).getDisplayName() + "'s party!");
+                        sender.sendMessage(ChatColor.GOLD + "You denied " + args[1] + " to your party!");
+                    }
+                }else {
+                    ((Player) sender).sendMessage(ChatColor.RED + "You are not the lead of the party! /blockshuffle createparty");
+                    return false;
+                }
+            }
+
+
         }
 
         return false;

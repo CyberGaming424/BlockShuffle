@@ -49,6 +49,12 @@ public class Party {
         return partyLead;
     }
 
+    public boolean hasRequest(UUID player){
+        return false;
+    }
+
+    public List<UUID> getPartyRequests(){ return partyRequests; }
+
     public Game getGame(){
         return game;
     }
